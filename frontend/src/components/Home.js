@@ -20,18 +20,24 @@ const Home = () => {
   
        
         <Fragment>
+         {loading ? <h1>Loading...</h1> : (
+                <Fragment>
+                    <MetaData title={'Buy best products online'} />
 
-           <MetaData title={'Home page'}/>
-             <h1 id="products_heading">Latest Products</h1>
+                    <h1 id="products_heading">Latest Products</h1>
 
-            <section id="products" className="container mt-5">
-               <div className="row">
-                {products && products.map(product => (
-                        
-                  <Product key={product._id} product={product} />
-                     ))}
-               </div>
-            </section>
+                    <section id="products" className="container mt-5">
+                        <div className="row">
+                            {products && products.map(product => (
+                                <Product key={product._id} product={product} />
+                            ))}
+
+
+                    </div>
+                    </section>
+                </Fragment>
+            )}
+           
         </Fragment>
        
        
