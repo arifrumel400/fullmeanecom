@@ -18,7 +18,7 @@ export const getProducts = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_PRODUCT_FAIL,
-            payload: error.resonse.data.message
+            payload: error.resonse.data.errMessage
         })
     }
 }
