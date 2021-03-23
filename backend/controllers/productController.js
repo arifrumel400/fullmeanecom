@@ -5,6 +5,7 @@ const Product = require('../models/product')
 
 //Create New product => /product/new
 exports.newProduct = async (req, res, next) => {
+    
 
     const product = await Product.create(req.body)
     
