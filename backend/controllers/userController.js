@@ -16,9 +16,9 @@ exports.registerUser = catchAsyncErrors (async (req, res, next) =>{
             url: 'asdf'
         }
     })
-
+    const token = user.getJwtToken()
     res.status(201).json({
-        success: true, 
-        user
+        success: true,
+        token
     })
 }) 
