@@ -60,7 +60,7 @@ exports.loginUser = catchAsyncErrors (async (req, res, next) => {
     sendToken(user, 200, res)
 }) 
 
-//Logout user  => /api/v1/logout
+//Logout user  => /logout
 exports.logoutUser = catchAsyncErrors (async (req, res, next) => {
     res.cookie('token', null, {
         exppires: new Date(Date.now()),
@@ -73,7 +73,7 @@ exports.logoutUser = catchAsyncErrors (async (req, res, next) => {
     })
 })
 
-//Forgot Password => /api/v1/password/forgot
+//Forgot Password => /password/forgot
 exports.forgotPassword = catchAsyncErrors (async (req, res, next) => {
     const user = await User.findOne({email: req.body.email})
 
@@ -112,4 +112,43 @@ exports.forgotPassword = catchAsyncErrors (async (req, res, next) => {
 
         return next(new ErrorHandler(error.message, 500)) // 500 = Internal server error
     }
+}) 
+
+//Reset password => /password/reset/:token
+exports.resetPassword = catchAsyncErrors (async (req, res, next) => {
+    //Hash url token 
+    const resetPasswordToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
+
+    const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire:{$gt: Date.now()}
+    })
+
+    if(!user){
+        return next(new ErrorHandler('Password reset token in invalied or has been expired', 400))
+    }
+
+    if(req.body.password !== req.body.confirmPassword) {
+        return next(new ErrorHandler('Password does not match', 400))
+    }
+
+    //Setup new password
+    user.password = req.body.password
+
+    user.resetPasswordToken = undefined; 
+    user.resetPasswordExpire = undefined;
+
+    await user.save()
+
+    sendToken(user, 200, res)
+}) 
+
+//Get currently logged in user => /me
+exports.getUserProfile = catchAsyncErrors (async (req, res, next) => {
+    const user = await User.findById(req.user.id)
+
+    res.status(200).json({
+        success: true,
+        user
+    })
 }) 
