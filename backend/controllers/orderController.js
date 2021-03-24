@@ -75,3 +75,33 @@ exports.allOrders = catchAsyncErrors (async (req, res, next) => {
         orders
     })
 }) 
+
+//update / process order => /admin/order/:id
+exports.UpdateOrder = catchAsyncErrors (async (req, res, next) => {
+    const order = await Order.find(req.params.id)
+
+   if(order.orderStatus === 'Delivered'){
+       return next(new ErrorHandler('Your have alread delivered this product', 400))
+   }
+
+   order.orderItems.forEach(async item => {
+       await updateStock(item.product, item.quantity)
+   })
+
+   order.status = req.body.status, 
+   order.deliveredAt = Date.now()
+
+   await order.save()
+
+    res.status(200).json({
+        success: true
+    })
+})
+
+async function updateStock(id, quantity){
+    const product = await Product.findById(id)
+
+    product.stock = product.stock - quantity
+
+    await product.save({validateBeforeSave: false})
+} 
