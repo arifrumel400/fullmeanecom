@@ -231,3 +231,20 @@ exports.updateUser = catchAsyncErrors (async (req, res, next) => {
         success: true
     })
 }) 
+
+//Delete user =>/admin/user/:id
+exports.deleteUser = catchAsyncErrors (async (req, res, next) => {
+    const user = await User.findById(req.params.id)
+
+    if(!user){
+        return next(new ErrorHandler(`User does not found with id: ${req.params.id}`))
+    }
+
+    //remove picture todo
+
+    await user.remove()
+
+    res.status(200).json({
+        success: true
+    })
+})
