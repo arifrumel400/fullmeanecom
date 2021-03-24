@@ -10,9 +10,11 @@ app.use(cookieParser())
 
 const products = require('./routes/product')
 const users = require('./routes/user')
+const order = require('./routes/order')
 
 app.use('/', products)
 app.use('/', users)
+app.use('/', order)
 
 //Middlewares to handle error
 app.use(errorMiddleware)
