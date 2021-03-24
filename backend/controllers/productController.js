@@ -6,7 +6,7 @@ const catchAsyncErrors = require('../middlewares/catchAsyncErrors')
 const APIFeatures = require('../utils/apiFeatures')
 const User = require('../models/user')
 
-//Create New product => /api/v1/product/new
+//Create New product => /product/new
 exports.newProduct = catchAsyncErrors( async (req, res, next) => {
     
     req.body.user = req.user.id
@@ -18,7 +18,7 @@ exports.newProduct = catchAsyncErrors( async (req, res, next) => {
     })
 })
 
-///Get all product => /api/v1/products
+///Get all product => /products
 
 exports.getProduct = catchAsyncErrors (async (req, res, next) => {
 
@@ -39,7 +39,7 @@ exports.getProduct = catchAsyncErrors (async (req, res, next) => {
     })
 })
 
-//get signle product details => /api/v1/product/:id
+//get signle product details => /product/:id
 exports.getSingleProduct = catchAsyncErrors (async (req, res, next) => {
     const product = await Product.findById(req.params.id)
     if(!product){
@@ -55,7 +55,7 @@ exports.getSingleProduct = catchAsyncErrors (async (req, res, next) => {
     })
 })
 
-//Update product = > /api/v1/product/:id
+//Update product = > /product/:id
 exports.updateProduct = catchAsyncErrors (async (req, res, next) => {
     let product = await Product.findById(req.params.id)
     if(!product){
@@ -72,7 +72,7 @@ exports.updateProduct = catchAsyncErrors (async (req, res, next) => {
     })
 })
 
-//Delete Product => /api/v1/product/:id
+//Delete Product => /product/:id
 exports.deleteProduct = catchAsyncErrors (async (req, res, next) => {
     let product = await Product.findById(req.params.id)
     if(!product){
