@@ -169,7 +169,7 @@ exports.UpdatePassword = catchAsyncErrors (async (req, res, next) => {
     sendToken(user, 200, res)
 }) 
 
-//Update user profile => /api/v1/me/update
+//Update user profile => /me/update
 exports.updateProfile = catchAsyncErrors (async (req, res, next) => {
     const newUserData = {
         name: req.body.name,
@@ -189,3 +189,14 @@ exports.updateProfile = catchAsyncErrors (async (req, res, next) => {
         success: true,
     })
 }) 
+
+//admin route
+//get all users => /admin/users
+exports.allUsers = catchAsyncErrors (async (req, res, next) => {
+    const users = await User.find()
+
+    res.status(200).json({
+        success: true,
+        users
+    })
+})
